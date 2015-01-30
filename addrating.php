@@ -15,6 +15,7 @@ $dbsettingsfile = "./httpdocs/dbsettings.inc.php";
 
 // Should we send some output? Ie for logging use: php addrating.php >> /var/log/spotweb
 $quiet = false;
+$timestamp = false; // Timestamp in logging
 
 // Age of spots to query for (in seconds):
 $age = 86400; // 1 day
@@ -47,7 +48,7 @@ $imdb = new Imdb();
 
 // Check connection:
 if (mysqli_connect_errno($con))
-    if ($debug) doLog("Failed to connect to MySQL: " . mysqli_connect_error());
+    doLog("Failed to connect to MySQL: " . mysqli_connect_error());
 else
 {
     // Connection is ok
@@ -70,7 +71,7 @@ else
             $title_from_spot = trim($matches[1]);
             $year = trim($matches[2]);
             $title_from_spot = str_replace(".", " ", $title_from_spot);
-            doLog("Found: ".$title_from_spot.", year: ".$year);
+            doLog("Using as title \"".$title_from_spot."\", year: ".$year);
             
             // Search movie info from IMDB:
             $movieArray = $imdb->getMovieInfo($title_from_spot . " (" . $year . ")", False);
@@ -160,7 +161,11 @@ else
 function doLog($message)
 {
     if(!$quiet)
-        echo date(DATE_ATOM)." ".$message.PHP_EOL;
+    {
+        if($timestamp)
+            echo date(DATE_ATOM)." ";
+        echo $message.PHP_EOL;
+    }
 }
 
 //Strip titles and compare
