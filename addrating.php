@@ -4,6 +4,10 @@
 // This script will add IMDB ratings to the spot title, like: "Movietitle (2014) release info [6.5]
 // It will also adjust the spot rating, based on the IMDB rating
 // The script assumes the spot title syntax is like: "Movie title (year) release info"
+//
+// Original code from MR_Blobby http://gathering.tweakers.net/forum/list_message/43647658#43647658
+// Edited by Rowdy - http://rowdy.nl
+
 
 // ====================================================================================================================
 // PARAMETERS, ESIT FOR YOUR INSTALLATION
