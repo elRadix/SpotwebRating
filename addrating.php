@@ -32,6 +32,11 @@ date_default_timezone_set('CET');
 // DO NOT EDIT BELOW
 // ====================================================================================================================
 
+// Show that we are starting
+doLog("Started rating of movies");
+$found = 0;
+$rated = 0;
+
 // Create MySQL connection (fill in correct values):
 require($dbsettingsfile);
 $con = mysqli_connect($dbsettings['host'], $dbsettings['user'], $dbsettings['pass'], $dbsettings['dbname']);
@@ -39,38 +44,6 @@ $con = mysqli_connect($dbsettings['host'], $dbsettings['user'], $dbsettings['pas
 // Initiate the IMDB class:
 require("./imdb.php");
 $imdb = new Imdb();
-
-function doLog($message)
-{
-    if(!$quiet)
-        echo date(DATE_ATOM)." ".$message;
-}
-
-//Strip titles and compare
-function compareTitles($string1, $string2)
-{
-    //Replace HTML characters
-    $string1 = html_entity_decode($string1, ENT_QUOTES);
-    $string2 = html_entity_decode($string2, ENT_QUOTES);
-
-    //Lowercase
-    $string1 = strtolower($string1);
-    $string2 = strtolower($string2);
-
-    //Remove unnecessary characters
-    $string1 = preg_replace('~[^A-Za-z0-9]~', "", $string1);
-    $string2 = preg_replace('~[^A-Za-z0-9]~', "", $string2);
-
-    //Do we have a match?
-    similar_text($string1, $string2, $percentage);
-
-    return $percentage;
-}
-
-function setSpotRating($rating)
-{
-    $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$row['id']);
-}
 
 // Check connection:
 if (mysqli_connect_errno($con))
@@ -87,6 +60,7 @@ else
     // Process all results:
     while ($row = mysqli_fetch_array($result))
     {
+        $found++;
         $title = $row['title'];
         doLog("Spot: ".$row['title']);
 
@@ -141,6 +115,7 @@ else
                         
                         setSpotRating($spotrating);
                         doLog("Rating of ".$imdb_rating." found");
+                        $rated++;
                     }
                     else
                     {
@@ -173,5 +148,45 @@ else
 
     // Close MySQL connection:
     mysqli_close($con);
+    
+    doLog($found." movies processed, of wich ".$rated." rated");
 }
+
+
+// ====================================================================================================================
+// Functions
+// ====================================================================================================================
+
+function doLog($message)
+{
+    if(!$quiet)
+        echo date(DATE_ATOM)." ".$message.PHP_EOL;
+}
+
+//Strip titles and compare
+function compareTitles($string1, $string2)
+{
+    //Replace HTML characters
+    $string1 = html_entity_decode($string1, ENT_QUOTES);
+    $string2 = html_entity_decode($string2, ENT_QUOTES);
+
+    //Lowercase
+    $string1 = strtolower($string1);
+    $string2 = strtolower($string2);
+
+    //Remove unnecessary characters
+    $string1 = preg_replace('~[^A-Za-z0-9]~', "", $string1);
+    $string2 = preg_replace('~[^A-Za-z0-9]~', "", $string2);
+
+    //Do we have a match?
+    similar_text($string1, $string2, $percentage);
+
+    return $percentage;
+}
+
+function setSpotRating($rating)
+{
+    $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$row['id']);
+}
+
 ?>
