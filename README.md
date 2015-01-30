@@ -13,6 +13,8 @@ Usage:
 
 Example shell script you can use in a cron (don't forget to make your file executable: chmod a+x addrating.sh)
 
+```
 #!/bin/bash
 cd /var/www/path/to/your/spotweb
 /usr/bin/php addrating.php > /var/log/spotwebrating
+```
