@@ -1,6 +1,6 @@
 # SpotwebRating
 ##Rating script / addon for Spotweb
-Adds a rating to a spot, ie "NIGHTCRAWLER (2014) x264 1080p Bluray DD5.1 + DTS NLSubs -Q o Q-" will become "NIGHTCRAWLER (2014) x264 1080p Bluray DD5.1 + DTS NLSubs -Q o Q- [8.1]" and will have a spotrating of 10.
+Adds a rating to a spot, ie "NIGHTCRAWLER (2014) x264 1080p Bluray DD5.1 + DTS NLSubs -Q o Q-" will become "NIGHTCRAWLER (2014) x264 1080p Bluray DD5.1 + DTS NLSubs -Q o Q- **[8.1]**" and will have a spotrating of 10.
 
 Based on code from Tweakers MR_Blobby and Satom
 http://gathering.tweakers.net/forum/list_message/43647658#43647658
