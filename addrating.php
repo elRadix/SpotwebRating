@@ -118,35 +118,35 @@ else
                         if ($imdb_rating >= 7.4) {$spotrating = 9;}
                         if ($imdb_rating >= 7.6) {$spotrating = 10;}
                         
-                        setSpotRating($spotrating, $row['id']);
+                        setSpotRating($con, $spotrating, $row['id']);
                         doLog("Rating of ".$imdb_rating." found");
                         $rated++;
                     }
                     else
                     {
                         // Clear spotrating if no rating found in IMDB
-                        setSpotRating(0, $row['id']);
+                        setSpotRating($con, 0, $row['id']);
                         doLog("No rating found found");
                     }
                 }
                 else
                 {
                     // Clear spotrating if the correct movie is not found in IMDB
-                    setSpotRating(0, $row['id']);
+                    setSpotRating($con, 0, $row['id']);
                     doLog("No matching movie found");
                 }
             }
             else
             {
                 // Clear spotrating if no movie is found in IMDB
-                setSpotRating(0, $row['id']);
+                setSpotRating($con, 0, $row['id']);
                 doLog("No movie found");
             }
         }
         else
         {
             // Clear spotrating if the movie title could not be extracted from the spot title
-            setSpotRating(0, $row['id']);
+            setSpotRating($con, 0, $row['id']);
             doLog("No title found");
         }
     }
@@ -193,7 +193,7 @@ function compareTitles($string1, $string2)
     return $percentage;
 }
 
-function setSpotRating($rating, $id)
+function setSpotRating($con, $rating, $id)
 {
     $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$id);
 }
