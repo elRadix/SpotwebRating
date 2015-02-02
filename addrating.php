@@ -98,12 +98,12 @@ else
                     if (!empty($imdb_rating))
                     {
                         // Rating found
-                        if ((preg_match('/(.+)( \[\d\.\d\])/', $title, $matches)) == 1)
+                        if ((preg_match('/(.+)( \[\d\,\d\])/', $title, $matches)) == 1)
                             // If the rating had already been added to the title, strip it
                             $title = $matches[1];
                             
                         // Add the rating to the spot title:
-                        $newtitle = str_replace(".", "&period;", $title)." [".$imdb_rating."]";
+                        $newtitle = $title." [".str_replace(".", ",", $imdb_rating)."]";
                         $updateresult = mysqli_query($con, "UPDATE spots SET title = '".$newtitle."' WHERE id = ".$row['id']);
                         $spotrating = 0;
                         
@@ -118,35 +118,35 @@ else
                         if ($imdb_rating >= 7.4) {$spotrating = 9;}
                         if ($imdb_rating >= 7.6) {$spotrating = 10;}
                         
-                        setSpotRating($spotrating);
+                        setSpotRating($spotrating, $row['id']);
                         doLog("Rating of ".$imdb_rating." found");
                         $rated++;
                     }
                     else
                     {
                         // Clear spotrating if no rating found in IMDB
-                        setSpotRating(0);
+                        setSpotRating(0, $row['id']);
                         doLog("No rating found found");
                     }
                 }
                 else
                 {
                     // Clear spotrating if the correct movie is not found in IMDB
-                    setSpotRating(0);
+                    setSpotRating(0, $row['id']);
                     doLog("No matching movie found");
                 }
             }
             else
             {
                 // Clear spotrating if no movie is found in IMDB
-                setSpotRating(0);
+                setSpotRating(0, $row['id']);
                 doLog("No movie found");
             }
         }
         else
         {
             // Clear spotrating if the movie title could not be extracted from the spot title
-            setSpotRating(0);
+            setSpotRating(0, $row['id']);
             doLog("No title found");
         }
     }
@@ -193,9 +193,9 @@ function compareTitles($string1, $string2)
     return $percentage;
 }
 
-function setSpotRating($rating)
+function setSpotRating($rating, $id)
 {
-    $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$row['id']);
+    $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$id);
 }
 
 ?>
