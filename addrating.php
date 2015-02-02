@@ -195,6 +195,7 @@ function compareTitles($string1, $string2)
 
 function setSpotRating($con, $rating, $id)
 {
+    doLog("Rating of ".$rating." set";
     $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$id);
 }
 
