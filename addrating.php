@@ -103,7 +103,7 @@ else
                             $title = $matches[1];
                             
                         // Add the rating to the spot title:
-                        $newtitle = str_replace(".", "&period;", $title." [".$imdb_rating."]");
+                        $newtitle = str_replace(".", "&period;", $title)." [".$imdb_rating."]";
                         $updateresult = mysqli_query($con, "UPDATE spots SET title = '".$newtitle."' WHERE id = ".$row['id']);
                         $spotrating = 0;
                         
