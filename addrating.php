@@ -119,7 +119,7 @@ else
                         if ($imdb_rating >= 7.6) {$spotrating = 10;}
                         
                         setSpotRating($con, $spotrating, $row['id']);
-                        doLog("Rating of ".$imdb_rating." found");
+                        doLog("Rating of ".$imdb_rating." found. Spotrating ".$spotrating." set.");
                         $rated++;
                     }
                     else
@@ -195,7 +195,6 @@ function compareTitles($string1, $string2)
 
 function setSpotRating($con, $rating, $id)
 {
-    doLog("Spotrating of ".$rating." set";
     $updateresult = mysqli_query($con, "UPDATE spots SET spotrating = '".$rating."' WHERE id = ".$id);
 }
 
