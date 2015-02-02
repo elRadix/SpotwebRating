@@ -66,7 +66,7 @@ else
     while ($row = mysqli_fetch_array($result))
     {
         $found++;
-        $title = $row['title'];
+        $title = str_replace("&period;", ".", $row['title']);
         doLog("Spot: ".$row['title']);
 
         // Regular expression to try to get a "clean" movietitle from the spot title (all text until "year"):
@@ -98,12 +98,12 @@ else
                     if (!empty($imdb_rating))
                     {
                         // Rating found
-                        if ((preg_match('/(.+)( \[\d\,\d\])/', $title, $matches)) == 1)
+                        if ((preg_match('/(.+)( \[\d\.\d\])/', $title, $matches)) == 1)
                             // If the rating had already been added to the title, strip it
                             $title = $matches[1];
                             
                         // Add the rating to the spot title:
-                        $newtitle = $title." [".str_replace(".", ",", $imdb_rating)."]";
+                        $newtitle = str_replace(".", "&period;", $title)." [".$imdb_rating."]";
                         $updateresult = mysqli_query($con, "UPDATE spots SET title = '".$newtitle."' WHERE id = ".$row['id']);
                         $spotrating = 0;
                         
